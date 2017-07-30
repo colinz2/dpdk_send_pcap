@@ -21,7 +21,25 @@ int main(int argc, char *argv[])
 
     nb_sys_ports = rte_eth_dev_count();
     if (nb_sys_ports <= 0) rte_exit(EXIT_FAILURE, "Cannot find ETH devices\n");
+    std::cout << "port num " << nb_sys_ports << std::endl;
+
+    int socket_id = rte_eth_dev_socket_id(1);
     
+    std::cout << "socket id = " << socket_id << std::endl;
+    char dev_name[128] = {0};
+    rte_eth_dev_get_name_by_port(1, dev_name); 
+    std::cout << dev_name << std::endl;
+
+    std::cout << rte_get_master_lcore() << std::endl;
+
+    struct rte_eth_dev_info dev_info;
+    rte_eth_dev_info_get(1, &dev_info);
+
+    printf("%d, %d, %d   \n", 
+            dev_info.max_rx_pktlen,
+            dev_info.max_rx_queues,
+            dev_info.max_tx_queues
+          ); 
 
     return 0;
 }
